@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Moyenne Universitaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        input {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f7ef;
+            border-radius: 4px;
+        }
+        .note-type {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .subject-avg {
+            color: #2c7be5;
+            font-weight: bold;
+        }
+        .weighted-grade {
+            color: #d10a11;
+            font-weight: bold;
+        }
+        .instagram-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 16px;
+        }
+        .instagram-link a {
+            color: #E1306C;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+        }
+        .instagram-link a:hover {
+            text-decoration: underline;
+        }
+        .instagram-link img {
+            width: 20px;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<div class="instagram-link">
+    <a href="https://www.instagram.com/kaled.manai_/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt="Instagram">
+        Suivez-moi sur Instagram: @kaled.manai_
+    </a>
+</div>
+<body>
+    <h1>Calculateur de Moyenne Universitaire</h1>
+    
+    <table id="gradesTable">
+        <thead>
+            <tr>
+                <th>Matière</th>
+                <th>Coefficient</th>
+                <th>DC/TEST</th>
+                <th>EF</th>
+                <th>Moyenne Matière</th>
+                <th>Note Pondérée</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be added dynamically -->
+        </tbody>
+    </table>
+    
+    <button id="calculateBtn">Calculer la Moyenne</button>
+    
+    <div id="result" class="result"></div>
+
+    <div class="instagram-link">
+        <a href="https://www.instagram.com/kaled.manai_/" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Instagram_icon.png/2048px-Instagram_icon.png" alt="Instagram">
+            Suivez-moi sur Instagram: @kaled.manai_
+        </a>
+    </div>
+
+    <script>
+        // Données des matières
+        const subjects = [
+            { name: "Analyse 1", coef: 1.5 },
+            { name: "Algèbre 1", coef: 1.5 },
+            { name: "Electrostatique et Magnétostatique", coef: 1.5 },
+            { name: "Mécanique", coef: 1.5 },
+            { name: "Systèmes d'exploitation", coef: 1.5 },
+            { name: "Algorithmique et Programmation", coef: 1.5 },
+            { name: "Electronique Numérique", coef: 1.5 },
+            { name: "Circuits Electriques", coef: 1.5 },
+            { name: "Anglais 1", coef: 1.5 },
+            { name: "C2i", coef: 1.5 }
+        ];
+
+        // Création des lignes du tableau
+        const tbody = document.querySelector("#gradesTable tbody");
+        
+        subjects.forEach(subject => {
+            const row = document.createElement("tr");
+            
+            // Nom de la matière
+            const nameCell = document.createElement("td");
+            nameCell.textContent = subject.name;
+            row.appendChild(nameCell);
+            
+            // Coefficient
+            const coefCell = document.createElement("td");
+            coefCell.textContent = subject.coef;
+            row.appendChild(coefCell);
+            
+            // DC ou TEST input
+            const dcCell = document.createElement("td");
+            const dcInput = document.createElement("input");
+            dcInput.type = "number";
+            dcInput.min = "0";
+            dcInput.max = "20";
+            dcInput.step = "0.01";
+            dcInput.className = "grade-input";
+            dcInput.dataset.type = isSpecialSubject(subject.name) ? "test" : "dc";
+            dcCell.appendChild(dcInput);
+            
+            // Ajout du type de note pour les matières spéciales
+            if (isSpecialSubject(subject.name)) {
+                const noteType = document.createElement("div");
+                noteType.className = "note-type";
+                noteType.textContent = "TEST (20%)";
+                dcCell.appendChild(noteType);
+            } else {
+                const noteType = document.createElement("div");
+                noteType.className = "note-type";
+                noteType.textContent = "DC (30%)";
+                dcCell.appendChild(noteType);
+            }
+            
+            row.appendChild(dcCell);
+            
+            // EF input
+            const efCell = document.createElement("td");
+            const efInput = document.createElement("input");
+            efInput.type = "number";
+            efInput.min = "0";
+            efInput.max = "20";
+            efInput.step = "0.01";
+            efInput.className = "grade-input";
+            efInput.dataset.type = "ef";
+            efCell.appendChild(efInput);
+            
+            // Ajout du type de note
+            const noteType = document.createElement("div");
+            noteType.className = "note-type";
+            noteType.textContent = isSpecialSubject(subject.name) ? "EF (80%)" : "EF (70%)";
+            efCell.appendChild(noteType);
+            
+            row.appendChild(efCell);
+            
+            // Cellule moyenne matière
+            const avgCell = document.createElement("td");
+            avgCell.className = "subject-avg";
+            avgCell.textContent = "-";
+            row.appendChild(avgCell);
+            
+            // Cellule note pondérée
+            const weightedCell = document.createElement("td");
+            weightedCell.className = "weighted-grade";
+            weightedCell.textContent = "-";
+            row.appendChild(weightedCell);
+            
+            tbody.appendChild(row);
+        });
+        
+        // Vérifie si la matière fait partie des cas spéciaux
+        function isSpecialSubject(subjectName) {
+            const specialSubjects = [
+                "Anglais 1",
+                "C2i"
+            ];
+            return specialSubjects.includes(subjectName);
+        }
+        
+        // Gestionnaire du bouton de calcul
+        document.getElementById("calculateBtn").addEventListener("click", () => {
+            const rows = document.querySelectorAll("#gradesTable tbody tr");
+            let totalWeighted = 0;
+            let totalCoef = 0;
+            
+            rows.forEach((row, index) => {
+                const subject = subjects[index];
+                const dcInput = row.querySelector("input[data-type='dc'], input[data-type='test']");
+                const efInput = row.querySelector("input[data-type='ef']");
+                const avgCell = row.querySelector(".subject-avg");
+                const weightedCell = row.querySelector(".weighted-grade");
+                
+                const dc = parseFloat(dcInput.value) || 0;
+                const ef = parseFloat(efInput.value) || 0;
+                
+                let subjectAverage;
+                let weightedGrade;
+                
+                if (isSpecialSubject(subject.name)) {
+                    // Matières spéciales: TEST*0.2 + EF*0.8
+                    subjectAverage = (dc * 0.2 + ef * 0.8);
+                    weightedGrade = subjectAverage * subject.coef;
+                } else {
+                    // Matières normales: DC*0.3 + EF*0.7
+                    subjectAverage = (dc * 0.3 + ef * 0.7);
+                    weightedGrade = subjectAverage * subject.coef;
+                }
+                
+                avgCell.textContent = subjectAverage.toFixed(2);
+                weightedCell.textContent = weightedGrade.toFixed(2);
+                totalWeighted += weightedGrade;
+                totalCoef += subject.coef;
+            });
+            
+            const average = totalWeighted / totalCoef;
+            document.getElementById("result").textContent = `Moyenne Générale Pondérée: ${average.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html>
