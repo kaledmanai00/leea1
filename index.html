@@ -6,53 +6,77 @@
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #f4f6f8;
+      background: #f2f4f8;
       margin: 0;
       padding: 0;
     }
     header {
       background-color: #1976d2;
       color: white;
-      padding: 15px;
+      padding: 20px;
       text-align: center;
     }
     .container {
       max-width: 900px;
       margin: 40px auto;
       background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     select, button {
-      padding: 10px;
+      padding: 12px;
       margin: 10px 0;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
       width: 100%;
       box-sizing: border-box;
+    }
+    button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #125ca1;
     }
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      margin-top: 25px;
     }
     table, th, td {
       border: 1px solid #ddd;
     }
     th, td {
-      padding: 10px;
+      padding: 12px;
       text-align: center;
     }
     th {
       background-color: #f0f0f0;
     }
-    .result {
-      margin-top: 20px;
-      background: #e3f2fd;
-      padding: 15px;
-      border: 1px solid #90caf9;
+    input[type="number"] {
+      padding: 8px;
+      width: 80px;
+      font-size: 14px;
       border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .result {
+      margin-top: 25px;
+      background: #e3f2fd;
+      padding: 20px;
+      border: 1px solid #90caf9;
+      border-radius: 10px;
       text-align: center;
+      font-size: 18px;
       font-weight: bold;
+      color: #0d47a1;
+    }
+    #matiereSection {
+      display: none;
     }
   </style>
 </head>
@@ -63,26 +87,28 @@
 </header>
 
 <div class="container">
-  <select id="selectSection" onchange="loadYears()"></select>
-  <select id="selectYear" onchange="loadMatieres()"></select>
+  <select id="selectSection"></select>
+  <select id="selectYear"></select>
+  <button onclick="showMatieres()">Afficher les matières</button>
 
-  <table id="matiereTable">
-    <thead>
-      <tr>
-        <th>Matière</th>
-        <th>Coef</th>
-        <th>Régime</th>
-        <th>Note DC</th>
-        <th>Note EF</th>
-        <th>Moyenne</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <div id="matiereSection">
+    <table id="matiereTable">
+      <thead>
+        <tr>
+          <th>Matière</th>
+          <th>Coef</th>
+          <th>Régime</th>
+          <th>Note DC</th>
+          <th>Note EF</th>
+          <th>Moyenne</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-  <button onclick="calculerNotes()">Calculer Moyenne</button>
-
-  <div id="resultUser" class="result"></div>
+    <button onclick="calculerNotes()">Calculer Moyenne</button>
+    <div id="resultUser" class="result"></div>
+  </div>
 </div>
 
 <script>
@@ -103,10 +129,10 @@
       option.textContent = section;
       select.appendChild(option);
     });
-    loadYears();
+    populateYears();
   }
 
-  function loadYears() {
+  function populateYears() {
     const section = document.getElementById('selectSection').value;
     const yearSelect = document.getElementById('selectYear');
     yearSelect.innerHTML = '';
@@ -116,10 +142,9 @@
       option.textContent = `Année ${year}`;
       yearSelect.appendChild(option);
     });
-    loadMatieres();
   }
 
-  function loadMatieres() {
+  function showMatieres() {
     const section = document.getElementById('selectSection').value;
     const year = document.getElementById('selectYear').value;
     const matieres = configData[section][year];
@@ -137,6 +162,8 @@
       `;
       tbody.appendChild(row);
     });
+    document.getElementById('matiereSection').style.display = 'block';
+    document.getElementById('resultUser').innerHTML = '';
   }
 
   function calculerNotes() {
