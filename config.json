@@ -1,0 +1,18 @@
+{
+  "INFO": {
+    "1": [
+      { "nom": "Mathématiques", "coef": 4, "regime": "MX" },
+      { "nom": "Physique", "coef": 3, "regime": "CC" }
+    ],
+    "2": [
+      { "nom": "Algorithmique", "coef": 4, "regime": "MX" },
+      { "nom": "Chimie", "coef": 3, "regime": "CC" }
+    ]
+  },
+  "MATH": {
+    "1": [
+      { "nom": "Calcul Différentiel", "coef": 5, "regime": "MX" },
+      { "nom": "Topologie", "coef": 4, "regime": "CC" }
+    ]
+  }
+}
