@@ -1,18 +1,16 @@
 {
-  "INFO": {
+  "LIRIS": {
     "1": [
-      { "nom": "Mathématiques", "coef": 4, "regime": "MX" },
-      { "nom": "Physique", "coef": 3, "regime": "CC" }
-    ],
-    "2": [
-      { "nom": "Algorithmique", "coef": 4, "regime": "MX" },
-      { "nom": "Chimie", "coef": 3, "regime": "CC" }
-    ]
-  },
-  "MATH": {
-    "1": [
-      { "nom": "Calcul Différentiel", "coef": 5, "regime": "MX" },
-      { "nom": "Topologie", "coef": 4, "regime": "CC" }
+      { "nom": "Analyse 1", "coef": 1.5, "regime": "MX" },
+      { "nom": "Algèbre 1", "coef": 1.5, "regime": "MX" },
+      { "nom": "Electricité - électronique", "coef": 2, "regime": "MX" },
+      { "nom": "Propagation et rayonnement", "coef": 1, "regime": "MX" },
+      { "nom": "Système d'exploitation 1", "coef": 2, "regime": "MX" },
+      { "nom": "Systèmes logiques", "coef": 1.5, "regime": "MX" },
+      { "nom": "Algorithmique et structures de données", "coef": 2, "regime": "MX" },
+      { "nom": "Atelier programmation 1", "coef": 1.5, "regime": "CC" },
+      { "nom": "Anglais 1", "coef": 1, "regime": "CC" },
+      { "nom": "Techniques de communication 1", "coef": 1, "regime": "CC" }
     ]
   }
 }
