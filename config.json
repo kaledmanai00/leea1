@@ -12,8 +12,7 @@
       { "nom": "Anglais 1", "coef": 1, "regime": "CC" },
       { "nom": "Techniques de communication 1", "coef": 1, "regime": "CC" }
     ]
-  }
-  
+  },
   "LCHI": {
     "1": [
       { "nom": "Anglais", "coef": 1.00, "regime": "CC" },
