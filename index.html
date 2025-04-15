@@ -16,55 +16,34 @@
       padding: 15px;
       text-align: center;
     }
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      margin: 20px;
-    }
-    nav button {
-      padding: 10px 20px;
-      background-color: #1976d2;
-      color: white;
-      border: none;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    nav button.active {
-      background-color: #0d47a1;
-    }
-    .panel {
-      max-width: 800px;
-      margin: auto;
-      padding: 20px;
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
       background: white;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 0 10px #ccc;
-      display: none;
     }
-    .panel.active {
-      display: block;
-    }
-    input, select {
-      padding: 8px;
-      margin: 5px 0 15px;
+    select, button {
+      padding: 10px;
+      margin: 10px 0;
       width: 100%;
       box-sizing: border-box;
     }
-    button.add {
-      background: #4caf50;
-      color: white;
-      border: none;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 5px;
-      cursor: pointer;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
     }
-    .matiere-row {
+    table, th, td {
       border: 1px solid #ddd;
+    }
+    th, td {
       padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
+      text-align: center;
+    }
+    th {
+      background-color: #f0f0f0;
     }
     .result {
       margin-top: 20px;
@@ -72,73 +51,56 @@
       padding: 15px;
       border: 1px solid #90caf9;
       border-radius: 5px;
+      text-align: center;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Plateforme de Calcul de Moyenne - FSG</h1>
+  <h1>Calcul de Moyenne - FSG</h1>
 </header>
 
-<nav>
-  <button id="btnAdmin" class="active" onclick="switchPanel('admin')">Admin Panel</button>
-  <button id="btnUser" onclick="switchPanel('user')">Panel Étudiant</button>
-</nav>
-
-<!-- Admin Panel -->
-<div id="adminPanel" class="panel active">
-  <h2>Créer une Section + Année</h2>
-  <input id="sectionInput" placeholder="Nom de la section (ex: INFO)">
-  <input id="yearInput" placeholder="Année d'étude (ex: 1ère année)">
-  <button class="add" onclick="addMatiere()">+ Ajouter Matière</button>
-  <div id="matieresList"></div>
-  <button onclick="saveSection()">Enregistrer la Section</button>
-</div>
-
-<!-- User Panel -->
-<div id="userPanel" class="panel">
-  <h2>Calcul de Moyenne Étudiant</h2>
+<div class="container">
   <select id="selectSection" onchange="loadYears()"></select>
   <select id="selectYear" onchange="loadMatieres()"></select>
-  <div id="studentMatieres"></div>
-  <button class="add" onclick="calculerNotes()">Calculer</button>
+
+  <table id="matiereTable">
+    <thead>
+      <tr>
+        <th>Matière</th>
+        <th>Coef</th>
+        <th>Régime</th>
+        <th>Note DC</th>
+        <th>Note EF</th>
+        <th>Moyenne</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <button onclick="calculerNotes()">Calculer Moyenne</button>
+
   <div id="resultUser" class="result"></div>
 </div>
 
 <script>
-  let matieresTemp = [];
   let configData = {};
   fetch('config.json')
-    .then(response => response.json())
+    .then(res => res.json())
     .then(data => {
       configData = data;
       populateSections();
     });
 
-  function switchPanel(panel) {
-    document.getElementById('adminPanel').classList.remove('active');
-    document.getElementById('userPanel').classList.remove('active');
-    document.getElementById('btnAdmin').classList.remove('active');
-    document.getElementById('btnUser').classList.remove('active');
-    if (panel === 'admin') {
-      document.getElementById('adminPanel').classList.add('active');
-      document.getElementById('btnAdmin').classList.add('active');
-    } else {
-      document.getElementById('userPanel').classList.add('active');
-      document.getElementById('btnUser').classList.add('active');
-      populateSections();
-    }
-  }
-
   function populateSections() {
     const select = document.getElementById('selectSection');
     select.innerHTML = '';
-    const sections = Object.keys(configData);
-    sections.forEach(s => {
+    Object.keys(configData).forEach(section => {
       const option = document.createElement('option');
-      option.value = s;
-      option.textContent = s;
+      option.value = section;
+      option.textContent = section;
       select.appendChild(option);
     });
     loadYears();
@@ -146,14 +108,13 @@
 
   function loadYears() {
     const section = document.getElementById('selectSection').value;
-    const select = document.getElementById('selectYear');
-    select.innerHTML = '';
-    const years = Object.keys(configData[section]);
-    years.forEach(y => {
+    const yearSelect = document.getElementById('selectYear');
+    yearSelect.innerHTML = '';
+    Object.keys(configData[section]).forEach(year => {
       const option = document.createElement('option');
-      option.value = y;
-      option.textContent = y;
-      select.appendChild(option);
+      option.value = year;
+      option.textContent = `Année ${year}`;
+      yearSelect.appendChild(option);
     });
     loadMatieres();
   }
@@ -162,18 +123,19 @@
     const section = document.getElementById('selectSection').value;
     const year = document.getElementById('selectYear').value;
     const matieres = configData[section][year];
-    const container = document.getElementById('studentMatieres');
-    container.innerHTML = '';
+    const tbody = document.querySelector('#matiereTable tbody');
+    tbody.innerHTML = '';
     matieres.forEach((m, i) => {
-      const div = document.createElement('div');
-      div.className = 'matiere-row';
-      div.innerHTML = `
-        <strong>${m.nom}</strong><br>
-        Coef: ${m.coef}, Régime: ${m.regime}<br>
-        Note DC: <input type="number" id="dc${i}">
-        Note EF: <input type="number" id="ef${i}">
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${m.nom}</td>
+        <td>${m.coef}</td>
+        <td>${m.regime}</td>
+        <td><input type="number" id="dc${i}" min="0" max="20"></td>
+        <td><input type="number" id="ef${i}" min="0" max="20"></td>
+        <td id="moy${i}">-</td>
       `;
-      container.appendChild(div);
+      tbody.appendChild(row);
     });
   }
 
@@ -181,24 +143,19 @@
     const section = document.getElementById('selectSection').value;
     const year = document.getElementById('selectYear').value;
     const matieres = configData[section][year];
-
-    let total = 0;
-    let coefTotal = 0;
-    let detail = "";
+    let total = 0, coefTotal = 0;
 
     matieres.forEach((m, i) => {
       const dc = parseFloat(document.getElementById(`dc${i}`).value) || 0;
       const ef = parseFloat(document.getElementById(`ef${i}`).value) || 0;
-      let moyenne = m.regime === 'MX' ? dc * 0.3 + ef * 0.7 : dc * 0.2 + ef * 0.8;
-      total += moyenne * m.coef;
+      const moy = m.regime === 'MX' ? dc * 0.3 + ef * 0.7 : dc * 0.2 + ef * 0.8;
+      document.getElementById(`moy${i}`).textContent = moy.toFixed(2);
+      total += moy * m.coef;
       coefTotal += m.coef;
-      detail += `<strong>${m.nom}</strong>: ${moyenne.toFixed(2)}<br>`;
     });
 
-    const moyenneFinale = (total / coefTotal).toFixed(2);
-    document.getElementById('resultUser').innerHTML = `
-      ${detail}<hr><strong>Moyenne Générale:</strong> ${moyenneFinale}
-    `;
+    const final = (total / coefTotal).toFixed(2);
+    document.getElementById('resultUser').innerHTML = `Moyenne Générale: ${final}`;
   }
 </script>
 
