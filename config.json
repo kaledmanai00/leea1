@@ -13,4 +13,19 @@
       { "nom": "Techniques de communication 1", "coef": 1, "regime": "CC" }
     ]
   }
+  {
+  "LCHI": {
+    "1": [
+      { "nom": "Anglais", "coef": 1.00, "regime": "CC" },
+      { "nom": "Culture et Compétences numériques - 2CN", "coef": 1.00, "regime": "CC" },
+      { "nom": "Techniques d'expression", "coef": 1.00, "regime": "CC" },
+      { "nom": "Cinétique chimique", "coef": 1.50, "regime": "MX" },
+      { "nom": "Thermodynamique Chimique", "coef": 2.00, "regime": "MX" },
+      { "nom": "Atomistique et périodicité des propriétés", "coef": 2.60, "regime": "MX" },
+      { "nom": "Activités Pratiques 1", "coef": 2.00, "regime": "MX" },
+      { "nom": "Mathématiques 1", "coef": 2.00, "regime": "MX" },
+      { "nom": "Physiques", "coef": 2.00, "regime": "MX" }
+    ]
+  }
+}
 }
