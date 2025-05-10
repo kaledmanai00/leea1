@@ -25,5 +25,22 @@
       { "nom": "Mathématiques 1", "coef": 2.00, "regime": "MX" },
       { "nom": "Physiques", "coef": 2.00, "regime": "MX" }
     ]
-  }
+  },
+  "LEEA" :{
+  "1"[
+  { "nom": "algebre", "coef": 1.50, "regime": "MX" },
+  { "nom": "analyse", "coef": 1.50, "regime": "MX" },
+  { "nom": "Anglais", "coef": 1.50, "regime": "CC" },
+  { "nom": "CDI", "coef": 1.50, "regime": "CC" },
+  { "nom": "CE", "coef": 1.50, "regime": "MX" },
+  { "nom": "EL", "coef": 1.50, "regime": "MX" },
+  { "nom": "mechanique", "coef": 1.50, "regime": "MX" },
+  { "nom": "SE", "coef": 1.50, "regime": "MX" },
+  { "nom": "Programation", "coef": 1.50, "regime": "MX" },
+  { "nom": "ELstatic", "coef": 1.50, "regime": "MX" },
+  
+  
+  ]
+
+}
 }
