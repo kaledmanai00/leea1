@@ -27,7 +27,7 @@
     ]
   },
   "LEEA" :{
-  "1"[
+  "1" : [
   { "nom": "algebre", "coef": 1.50, "regime": "MX" },
   { "nom": "analyse", "coef": 1.50, "regime": "MX" },
   { "nom": "Anglais", "coef": 1.50, "regime": "CC" },
