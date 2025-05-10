@@ -37,7 +37,7 @@
   { "nom": "mechanique", "coef": 1.50, "regime": "MX" },
   { "nom": "SE", "coef": 1.50, "regime": "MX" },
   { "nom": "Programation", "coef": 1.50, "regime": "MX" },
-  { "nom": "ELstatic", "coef": 1.50, "regime": "MX" },
+  { "nom": "ELstatic", "coef": 1.50, "regime": "MX" }
   
   
   ]
